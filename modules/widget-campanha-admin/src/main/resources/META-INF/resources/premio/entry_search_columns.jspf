@@ -1,0 +1,126 @@
+ <%-- Generate premio view  URL. --%>
+
+ <portlet:renderURL var="viewPremioURL">
+     <portlet:param name="mvcRenderCommandName" value="<%=MVCCommandKeys.VIEW_PREMIO %>" />
+     <portlet:param name="redirect" value="${currentURL}" />
+     <portlet:param name="premioId" value="${entryPremio.premioId}" />
+ </portlet:renderURL>
+
+<c:set var="userIdPremiado" value="${String.valueOf(entryPremio.getUserIdPremiado())}" ></c:set>
+<c:if test="${userIdPremiado eq '0' }">
+	<c:set var="userIdPremiado" value="Não"></c:set>
+</c:if> 
+
+ <c:choose>
+
+     <%-- Descriptive (list) view --%>
+
+     <c:when
+         test='${premiosManagementToolbarDisplayContext.getDisplayStyle().equals("descriptive")}'>
+
+         <%-- User --%>
+
+         <liferay-ui:search-container-column-user 
+             showDetails="<%=false%>"
+             userId="<%=entryPremio.getUserId()%>" 
+         />
+
+         <liferay-ui:search-container-column-text colspan="<%=2%>">
+
+             <%
+                 String modifiedDateDescription =
+                     LanguageUtil.getTimeDescription(
+                             request, System.currentTimeMillis() 
+                             - entryPremio.getModifiedDate().getTime(), true);
+             %>
+
+             <h5 class="text-default">
+                 <liferay-ui:message
+                     arguments="<%=new String[] {entryPremio.getUserName(), modifiedDateDescription}%>"
+                     key="x-modified-x-ago" />
+             </h5>
+
+             <h4>
+                 <aui:a href="${viewPremioURL}">
+                     ${entryPremio.getNome()}
+                 </aui:a>
+             </h4>
+
+         </liferay-ui:search-container-column-text>
+
+         <liferay-ui:search-container-column-jsp
+             path="/premio/entry_actions.jsp" />
+     </c:when>
+
+     <%-- Card view  --%>
+
+     <c:when
+         test='${premiosManagementToolbarDisplayContext.getDisplayStyle().equals("icon")}'>
+
+         <%
+             row.setCssClass("lfr-asset-item");
+         %>
+
+         <liferay-ui:search-container-column-text>
+
+             <%-- Vertical card. --%>
+
+             <liferay-frontend:icon-vertical-card
+                 actionJsp="/premio/entry_actions.jsp"
+                 actionJspServletContext="<%= application %>" 
+                 icon="cards2" resultRow="${row}"
+                 title="${entryPremio.getNome()}" 
+                 url="${viewPremioURL}">
+
+                 <liferay-frontend:vertical-card-sticker-bottom>
+
+                     <liferay-ui:user-portrait 
+                         cssClass="sticker sticker-bottom"
+                         userId="${entryPremio.userId}" 
+                     />
+                 </liferay-frontend:vertical-card-sticker-bottom>
+
+                 <liferay-frontend:vertical-card-footer>
+
+                       <div class="truncate-text">
+
+                           <%-- Strip HTML --%>
+
+                           <%=HtmlUtil.stripHtml(entryPremio.getDescricao()) %>
+                       </div>
+                 </liferay-frontend:vertical-card-footer>
+             </liferay-frontend:icon-vertical-card>
+         </liferay-ui:search-container-column-text>
+     </c:when>
+
+     <%-- Table view --%>
+
+     <c:otherwise>
+
+         <liferay-ui:search-container-column-text 
+             href="${viewPremioURL}" 
+             name="Titulo" 
+             value="<%= entryPremio.getNome() %>" 
+         />
+
+         <liferay-ui:search-container-column-user 
+             name="Autoria" 
+             userId="${entryPremio.userId}" 
+         />
+
+         <liferay-ui:search-container-column-date 
+             name="Data de criação"
+             property="createDate" 
+         />
+         
+         <liferay-ui:search-container-column-text 
+             name="Sorteado"
+             value="${userIdPremiado}" 
+         />
+
+         <liferay-ui:search-container-column-jsp 
+             name="Opções"
+             path="/premio/entry_actions.jsp" 
+         />
+     </c:otherwise>
+ </c:choose>

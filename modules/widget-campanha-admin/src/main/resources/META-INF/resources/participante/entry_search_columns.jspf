@@ -1,0 +1,46 @@
+ <%-- Generate participante view  URL. --%>
+
+ <portlet:renderURL var="viewParticipanteURL">
+     <portlet:param name="mvcRenderCommandName" value="<%=MVCCommandKeys.VIEW_PARTICIPANTE %>" />
+     <portlet:param name="redirect" value="${currentURL}" />
+     <portlet:param name="participanteId" value="${entryParticipante.participanteId}" />
+ </portlet:renderURL>
+
+ 		<liferay-ui:search-container-column-text 
+             href="${viewParticipanteURL}" 
+             name="Titulo" 
+             value="<%= entryParticipante.getUserName() %>" 
+         />
+         
+         <liferay-ui:search-container-column-text 
+             name="Id" 
+             value="<%= String.valueOf(entryParticipante.getParticipanteId()) %>" 
+         />
+         
+          <liferay-ui:search-container-column-text 
+             name="Sorteado" 
+             value="<%= String.valueOf(entryParticipante.getParticipanteId()) %>" 
+         />
+
+
+         <liferay-ui:search-container-column-jsp 
+             name="Opções"
+             path="/participante/entry_actions.jsp" 
+         />
+
+<%--   <div>
+
+     <h1>${entryPremio.getNome()}</h1>
+
+     <div>
+
+         <dl>
+
+             <dt><liferay-ui:message key="" /></dt>
+             <dd>${entryPremio.getDescricao()}</dd>
+             
+             <img SRC="${entryPremio.getFileUrl()}" width="200" height="200">
+			             
+         </dl>
+     </div>
+ </div> --%>

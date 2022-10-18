@@ -1,0 +1,99 @@
+<style>
+	.texto-resumo {
+	    height: 155px;
+	    padding: 0 16px;
+	    margin-bottom: 20px;
+        overflow: hidden;
+        position: relative;
+		color: #787878; 
+		font-family: "Ubuntu", sans-serif; 
+		font-weight: 400;
+		
+	}
+	
+	.item-noticia {
+    background: #fff;
+    box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
+    margin: 0 30px 10px 2px;
+    width: 290px;
+}
+	
+	.link-noticia {background: linear-gradient(90.08deg, #21479b 20.88%, #2dc5e7 99.94%);
+    font-size: 12px;
+    font-weight: 700;
+    float: right;
+    letter-spacing: 0.1em;
+    margin: 0 35px 22px 0;
+    text-transform: uppercase;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+   
+
+</style>
+
+<#if entries?has_content>
+    <div class='div-pai-teste' style="display: flex; flex-wrap: wrap;" >
+        
+            
+        
+        	<#list entries as curEntry>
+                    <#assign article = curEntry.getAssetRenderer().getArticle() />
+                    <#assign content = curEntry.getAssetRenderer().getArticle().getContent() />
+            		<#assign docXml = saxReaderUtil.read(article.getContentByLocale(locale.toString())) />
+                    <#assign dateFormat = "dd/MM/yyyy" />
+                    <#assign dataCriacao = dateUtil.getDate(curEntry.getPublishDate(), dateFormat, locale, timeZone) />
+                    <#assign assunto = docXml.valueOf("//dynamic-element[@name='assunto']/dynamic-content/text()") />
+                     
+                    <#assign urlAmigavel = '/-/' + article.getUrlTitle() />
+                    
+                    <#assign jsonImagemCapa = docXml.valueOf("//dynamic-element[@name='imagemCapa']/dynamic-content/text()") />
+                    
+                    <#assign
+                          dlAppLocalServiceUtil = staticUtil["com.liferay.document.library.kernel.service.DLAppLocalServiceUtil"]
+                          dlUtil = staticUtil["com.liferay.document.library.kernel.util.DLUtil"]
+                          imagem = jsonImagemCapa?eval
+                          imagemUuid = imagem.uuid
+                          groupId = imagem.groupId
+                          dlFile = dlAppLocalServiceUtil.getFileEntryByUuidAndGroupId(imagemUuid,groupId?number)
+                          imgUrl =  dlUtil.getPreviewURL(dlFile, dlFile.getFileVersion(),themeDisplay,'') />
+                <div class="item-noticia" style="border-width: 2px; border-color: black; width: 335px; height 500px; margin: 15px;">
+                    
+                    <div style="background-size: 100%; width: 335px; height: 225px; background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 1) 100%), url(${imgUrl});">
+                        <div style=" padding: 0 16px;">
+                            <strong style ="color:white;">${article.getTitle(locale)}</strong>  
+                        </div>
+                    </div>
+                    
+                    <div class="texto-resumo" display="block">
+                        
+                        <h6>${dataCriacao}</h6>
+                        <br>
+                        ${content}
+                        
+                        
+                    </div> 
+                    
+                    <div>
+                        <a href="${urlAmigavel}" class="link-noticia"> SAIBA MAIS</a>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+                </div>
+                
+                
+        	</#list>
+    
+    	
+	</div>
+	<div style="display: table; margin: 0 auto;">
+        <a href="/noticia/" class="link-noticia">
+            VEJA MAIS
+        </a>
+    </div>
+</#if>

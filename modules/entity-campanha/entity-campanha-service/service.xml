@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="br.com.vertigo.estagio.campanha">
+	<namespace>FOO</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity local-service="true" name="Promocao"
+		remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="promocaoId" primary="true" type="long"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedDate" type="Date"></column>
+
+		<!-- Other fields -->
+
+		<column name="nome" type="String"></column>
+		<column name="descricao" type="String"></column>
+		<column name="fileEntryId" type="long"></column>
+		<column name="fileUrl" type="String"></column>
+		<column name="premioId" type="long"></column>
+		<column name="dataInicio" type="Date"></column>
+		<column name="dataTermino" type="Date"></column>
+		<column name="sorteado" type="boolean"></column>
+		
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="promocaoId"></order-column>
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+		</finder>
+		
+		<finder name="CompanyId" return-type="Collection">
+			<finder-column name="companyId"></finder-column>
+		</finder>
+
+
+		<!-- Reference to Group entity service -->
+
+		<reference entity="Group" package-path="com.liferay.portal"></reference>
+
+		<!-- Entity services needed for the integration to Asset framework -->
+
+		<reference entity="AssetEntry"
+			package-path="com.liferay.portlet.asset">
+		</reference>
+
+
+	</entity>
+	
+	
+	
+	
+	
+	
+	
+	
+	<entity local-service="true" name="Premio" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="premioId" primary="true" type="long"></column>
+
+		
+        <column name="promocaoId" type="long"></column>
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedDate" type="Date"></column>
+
+		<!-- Other fields -->
+        <column name="nome" type="String"></column>
+		<column name="descricao" type="String"></column>
+		<column name="fileEntryId" type="long"></column>
+		<column name="fileUrl" type="String"></column>
+		<column name="userIdPremiado" type="long"/>
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="premioId"></order-column>
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+		</finder>
+
+		<finder name="premioId" return-type="Collection">
+			<finder-column name="premioId"></finder-column>
+		</finder>
+		
+		<finder name="Pa_Pe" return-type="Collection">
+        	<finder-column name="groupId"></finder-column>
+        	<finder-column name="promocaoId"></finder-column>
+	    </finder>
+	    <finder name="UserIdPremiado" return-type="Collection">
+        	<finder-column name="userIdPremiado"></finder-column>
+   		</finder>
+   		
+     	<finder name="ParticipanteIdPromocaoId" return-type="Collection">
+       		 <finder-column name="userIdPremiado"></finder-column>
+        	 <finder-column name="promocaoId"></finder-column>
+   		</finder>
+				<!-- Reference to Group entity service -->
+
+		<reference entity="Group" package-path="com.liferay.portal"></reference>
+
+		<!-- Entity services needed for the integration to Asset framework -->
+
+		<reference entity="AssetEntry"
+			package-path="com.liferay.portlet.asset">
+		</reference>
+		
+	</entity>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<entity local-service="true" name="Participante" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="participanteId" primary="true" type="long"></column>
+		<column name="promocaoId" type="long"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedDate" type="Date"></column>
+
+		<!-- Other fields -->
+        <column name="email" type="String"></column>
+        <column name="primeiroNome" type="String"></column>
+        <column name="ultimoNome" type="String"></column>
+        
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="participanteId"></order-column>
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+		</finder>
+
+	    <finder name="ParticipanteId" return-type="Collection">
+        	<finder-column name="participanteId"></finder-column>
+   		</finder>
+		
+		<finder name="Po_Pa" return-type="Collection">
+        	<finder-column name="groupId"></finder-column>
+        	<finder-column name="promocaoId"></finder-column>
+	    </finder>
+	    
+	    <finder name="UserId" return-type="Participante">
+	    	<finder-column name="promocaoId"></finder-column>
+	    	<finder-column name="userId"></finder-column>
+	    </finder>
+
+     	<finder name="ParticipanteIdPromocaoId" return-type="Collection">
+       		 <finder-column name="participanteId"></finder-column>
+        	 <finder-column name="promocaoId"></finder-column>
+   		</finder>
+	</entity>
+</service-builder>

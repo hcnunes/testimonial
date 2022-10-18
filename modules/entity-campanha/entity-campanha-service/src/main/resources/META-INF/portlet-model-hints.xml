@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="br.com.vertigo.estagio.campanha.model.Participante">
+		<field name="participanteId" type="long" />
+		<field name="promocaoId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="email" type="String" />
+		<field name="primeiroNome" type="String" />
+		<field name="ultimoNome" type="String" />
+	</model>
+	<model name="br.com.vertigo.estagio.campanha.model.Premio">
+		<field name="premioId" type="long" />
+		<field name="promocaoId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="nome" type="String" />
+		<field name="descricao" type="String" />
+		<field name="fileEntryId" type="long" />
+		<field name="fileUrl" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="userIdPremiado" type="long" />
+	</model>
+	<model name="br.com.vertigo.estagio.campanha.model.Promocao">
+		<field name="uuid" type="String" />
+		<field name="promocaoId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="nome" type="String" />
+		<field name="descricao" type="String" />
+		<field name="fileEntryId" type="long" />
+		<field name="fileUrl" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="premioId" type="long" />
+		<field name="dataInicio" type="Date" />
+		<field name="dataTermino" type="Date" />
+		<field name="sorteado" type="boolean" />
+	</model>
+</model-hints>

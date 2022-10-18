@@ -1,0 +1,4 @@
+Bundle-Name: widget-testimonial
+Bundle-SymbolicName: com.liferay.testimonial
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.testimonial.constants

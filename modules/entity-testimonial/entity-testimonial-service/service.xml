@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="com.liferay.testimonial">
+	<namespace>TTM</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity local-service="true" name="Testament" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="testamentId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+		<column name="title" type="String" />
+		<column name="message" type="String" />
+		<column name="dueDate" type="Date" />
+		<column name="contactId" type="long"/>
+		
+		
+		<!-- Order -->
+        <order by="asc">
+			<order-column name="dueDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="DueDate" return-type="Collection">
+			<finder-column name="dueDate" />
+		</finder>
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
+	</entity>
+	
+	
+	
+	<entity local-service="true" name="Contact" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="contactId" primary="true" type="long"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedDate" type="Date"></column>
+
+		<!-- Other fields -->
+		<column name="testamentId" type="long"></column>
+		<column name="name" type="String"></column>
+		<column name="hasOpened" type="boolean"></column>
+		<column name="email" type="String"></column>
+		<column name="phoneNumber" type="String"></column>
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="hasOpened"></order-column>
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="TestamentId" return-type="Collection">
+			<finder-column name="testamentId"></finder-column>
+		</finder>
+		<finder name="HasOpened" return-type="Collection">
+			<finder-column name="hasOpened"></finder-column>
+		</finder>
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+	</entity>
+</service-builder>

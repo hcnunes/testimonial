@@ -1,0 +1,129 @@
+ <%-- Generate promocao view  URL. --%>
+
+ <portlet:renderURL var="viewPromocaoURL">
+     <portlet:param name="mvcRenderCommandName" value="<%=MVCCommandKeys.VIEW_PROMOCAO %>" />
+     <portlet:param name="redirect" value="${currentURL}" />
+     <portlet:param name="promocaoId" value="${entry.promocaoId}" />
+ </portlet:renderURL>
+
+<c:set var="promocaoSorteado" value="${String.valueOf(entry.getSorteado())}" ></c:set>
+<c:if test="${promocaoSorteado eq 'false' }">
+	<c:set var="promocaoSorteado" value="Não"></c:set>
+</c:if> 
+<c:if test="${promocaoSorteado eq 'true' }">
+	<c:set var="promocaoSorteado" value="Finalizada"></c:set>
+</c:if> 
+
+ <c:choose>
+
+     <%-- Descriptive (list) view --%>
+
+     <c:when
+         test='${promocaosManagementToolbarDisplayContext.getDisplayStyle().equals("descriptive")}'>
+
+         <%-- User --%>
+
+         <liferay-ui:search-container-column-user 
+             showDetails="<%=false%>"
+             userId="<%=entry.getUserId()%>" 
+         />
+
+         <liferay-ui:search-container-column-text colspan="<%=2%>">
+
+             <%
+                 String modifiedDateDescription =
+                     LanguageUtil.getTimeDescription(
+                             request, System.currentTimeMillis() 
+                             - entry.getModifiedDate().getTime(), true);
+             %>
+
+             <h5 class="text-default">
+                 <liferay-ui:message
+                     arguments="<%=new String[] {entry.getUserName(), modifiedDateDescription}%>"
+                     key="x-modified-x-ago" />
+             </h5>
+
+             <h4>
+                 <aui:a href="${viewPromocaoURL}">
+                     ${entry.getNome()}
+                 </aui:a>
+             </h4>
+
+         </liferay-ui:search-container-column-text>
+
+         <liferay-ui:search-container-column-jsp
+             path="/promocao/entry_actions.jsp" />
+     </c:when>
+
+     <%-- Card view  --%>
+
+     <c:when
+         test='${promocaosManagementToolbarDisplayContext.getDisplayStyle().equals("icon")}'>
+
+         <%
+             row.setCssClass("lfr-asset-item");
+         %>
+
+         <liferay-ui:search-container-column-text>
+
+             <%-- Vertical card. --%>
+
+             <liferay-frontend:icon-vertical-card
+                 actionJsp="/promocao/entry_actions.jsp"
+                 actionJspServletContext="<%= application %>" 
+                 icon="cards2" resultRow="${row}"
+                 title="${entry.getNome()}" 
+                 url="${viewPromocaoURL}">
+
+                 <liferay-frontend:vertical-card-sticker-bottom>
+
+                     <liferay-ui:user-portrait 
+                         cssClass="sticker sticker-bottom"
+                         userId="${entry.userId}" 
+                     />
+                 </liferay-frontend:vertical-card-sticker-bottom>
+
+                 <liferay-frontend:vertical-card-footer>
+
+                       <div class="truncate-text">
+
+                           <%-- Strip HTML --%>
+
+                           <%=HtmlUtil.stripHtml(entry.getDescricao()) %>
+                       </div>
+                 </liferay-frontend:vertical-card-footer>
+             </liferay-frontend:icon-vertical-card>
+         </liferay-ui:search-container-column-text>
+     </c:when>
+
+     <%-- Table view --%>
+
+     <c:otherwise>
+
+         <liferay-ui:search-container-column-text 
+             href="${viewPromocaoURL}" 
+             name="Titulo" 
+             value="<%= entry.getNome() %>" 
+         />
+
+         <liferay-ui:search-container-column-user 
+             name="Autoria" 
+             userId="${entry.userId}" 
+         />
+
+         <liferay-ui:search-container-column-date 
+             name="Data de criação"
+             property="createDate" 
+         />
+
+		 <liferay-ui:search-container-column-text 
+             name="Sorteada"
+             value="${promocaoSorteado}" 
+         />
+
+         <liferay-ui:search-container-column-jsp 
+             name="Opções"
+             path="/promocao/entry_actions.jsp" 
+         />
+     </c:otherwise>
+ </c:choose>

@@ -1,0 +1,116 @@
+ <%-- Generate contact view  URL. --%>
+
+ <portlet:renderURL var="viewcontactURL">
+     <portlet:param name="mvcRenderCommandName" value="<%=MVCCommandKeys.VIEW_CONTACT%>" />
+     <portlet:param name="redirect" value="${currentURL}" />
+     <portlet:param name="contactId" value="${entry.contactId}" />
+ </portlet:renderURL>
+
+ <c:choose>
+
+     <%-- Descriptive (list) view --%>
+
+     <c:when
+         test='${contactsManagementToolbarDisplayContext.getDisplayStyle().equals("descriptive")}'>
+
+         <%-- User --%>
+
+         <liferay-ui:search-container-column-user 
+             showDetails="<%=false%>"
+             userId="<%=entry.getUserId()%>" 
+         />
+
+         <liferay-ui:search-container-column-text colspan="<%=2%>">
+
+             <%
+                 String modifiedDateDescription =
+                     LanguageUtil.getTimeDescription(
+                             request, System.currentTimeMillis() 
+                             - entry.getModifiedDate().getTime(), true);
+             %>
+
+             <h5 class="text-default">
+                 <liferay-ui:message
+                     arguments="<%=new String[] {entry.getUserName(), modifiedDateDescription}%>"
+                     key="x-modified-x-ago" />
+             </h5>
+
+             <h4>
+                 <aui:a href="${viewcontactURL}">
+                     ${entry.getName()}
+                 </aui:a>
+             </h4>
+
+         </liferay-ui:search-container-column-text>
+
+         <liferay-ui:search-container-column-jsp
+             path="/contact/entry_actions.jsp" />
+     </c:when>
+
+     <%-- Card view  --%>
+
+     <c:when
+         test='${contactsManagementToolbarDisplayContext.getDisplayStyle().equals("icon")}'>
+
+         <%
+             row.setCssClass("lfr-asset-item");
+         %>
+
+         <liferay-ui:search-container-column-text>
+
+             <%-- Vertical card. --%>
+
+             <liferay-frontend:icon-vertical-card
+                 actionJsp="/contact/entry_actions.jsp"
+                 actionJspServletContext="<%= application %>" 
+                 icon="cards2" resultRow="${row}"
+                 title="${entry.getName()}" 
+                 url="${viewcontactURL}">
+
+                 <liferay-frontend:vertical-card-sticker-bottom>
+
+                     <liferay-ui:user-portrait 
+                         cssClass="sticker sticker-bottom"
+                         userId="${entry.userId}" 
+                     />
+                 </liferay-frontend:vertical-card-sticker-bottom>
+
+                 <liferay-frontend:vertical-card-footer>
+
+                       <div class="truncate-text">
+
+                           <%-- Strip HTML --%>
+
+                           <%=HtmlUtil.stripHtml(entry.getName()) %>
+                       </div>
+                 </liferay-frontend:vertical-card-footer>
+             </liferay-frontend:icon-vertical-card>
+         </liferay-ui:search-container-column-text>
+     </c:when>
+
+     <%-- Table view --%>
+
+     <c:otherwise>
+
+         <liferay-ui:search-container-column-text 
+             href="${viewcontactURL}" 
+             name="name" 
+             value="<%= entry.getName() %>" 
+         />
+
+         <liferay-ui:search-container-column-user 
+             name="author" 
+             userId="${entry.userId}" 
+         />
+
+         <liferay-ui:search-container-column-date 
+             name="create-date"
+             property="createDate" 
+         />
+
+         <liferay-ui:search-container-column-jsp 
+             name="actions"
+             path="/contact/entry_actions.jsp" 
+         />
+     </c:otherwise>
+ </c:choose>

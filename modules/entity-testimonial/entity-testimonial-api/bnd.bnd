@@ -1,0 +1,10 @@
+Bundle-Name: entity-testimonial-api
+Bundle-SymbolicName: com.liferay.testimonial.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.testimonial.exception,\
+	com.liferay.testimonial.model,\
+	com.liferay.testimonial.service,\
+	com.liferay.testimonial.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../entity-testimonial-service/service.xml

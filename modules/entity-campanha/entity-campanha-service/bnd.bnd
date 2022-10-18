@@ -1,0 +1,6 @@
+Bundle-Name: entity-campanha-service
+Bundle-SymbolicName: br.com.vertigo.estagio.campanha.service
+Bundle-Version: 1.0.0
+Liferay-Require-SchemaVersion: 1.0.0
+Liferay-Service: true
+-dsannotations-options: inherit
