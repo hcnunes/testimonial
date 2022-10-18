@@ -1,5 +1,0 @@
-Bundle-Name: widget-campanha-admin
-Bundle-SymbolicName: br.com.vertigo.estagio.campanha.web.admin
-Bundle-Version: 1.0.0
-Export-Package: br.com.vertigo.estagio.campanha.web.admin.constants
--metatype: *
