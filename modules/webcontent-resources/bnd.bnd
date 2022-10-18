@@ -1,4 +1,0 @@
-Bundle-Name: webcontent-resources
-Bundle-SymbolicName: br.com.vertigo.estagio.webcontent.resources
-Bundle-Version: 1.0.0
-Export-Package: br.com.vertigo.estagio.webcontent.resources.api
